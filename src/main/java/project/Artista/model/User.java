@@ -1,32 +1,32 @@
 package project.Artista.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Service;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    protected int id;
-    protected String username;
-    protected String password;
-    protected String fullName;
-    protected String email;
-    protected String profilePic;
-    protected String address;
+    private int id;
+    @Column(unique = true)
+    private String userName;
+    private String password;
+    private String fullName;
+    private String email;
+    private String profilePic;
+    private String address;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
-    public User(){}
-    public User(String username, String password, String fullName, String email, String profilePic, String address) {
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.profilePic = profilePic;
-        this.address = address;
-    }
+
+
 }
