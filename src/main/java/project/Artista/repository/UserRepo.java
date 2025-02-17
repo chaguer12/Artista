@@ -6,4 +6,6 @@ import project.Artista.model.User;
 
 
 public interface UserRepo extends JpaRepository<User, Integer> {
+    User findByUserName(String username);
+    User findByEmail(String email);
 }

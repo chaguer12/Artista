@@ -6,6 +6,6 @@ import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.model.User;
 
-@Mapper(componentModel = "spring")
+@Mapper(config = GenericMapper.class)
 public interface UserMapper extends GenericMapper<User, UserReqDTO, UserResDTO> {
 }

@@ -7,6 +7,8 @@ import project.Artista.dto.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
+import project.Artista.exception.UserAlreadyExists;
+import project.Artista.model.Role;
 import project.Artista.model.User;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.UserServiceInterface;
@@ -22,17 +24,20 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserResDTO saveUser(UserReqDTO userDTO) {
-//        User user = userMapper.toEntity(userDTO);
-//        User savedUser = userRepo.save(user);
-//        return userMapper.toDTO(savedUser);
+        //conditon dyal email
+        if(userRepo.findByEmail(userDTO.email()) == null){
         User user = User.builder()
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
                 .password(userDTO.password())
+                .role(Role.ROLE_USER)
                 .build();
         userRepo.save(user);
         return userMapper.toDTO(user);
+        }else {
+            throw new UserAlreadyExists("User already exists with email: " + userDTO.email());
+        }
     }
 
     @Override

@@ -9,16 +9,14 @@ import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.service.UserServiceInterface;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
-
 public class UserController {
 
     private final  UserServiceInterface userService;
 
-    public UserController(UserServiceInterface userService) {
-        this.userService = userService;
-    }
+
 
     @PostMapping("/sign-up")
     public ResponseEntity<UserResDTO> signUp(@Valid @RequestBody UserReqDTO userReq) {

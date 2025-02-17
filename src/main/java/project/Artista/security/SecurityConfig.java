@@ -20,8 +20,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/user/sign-up").permitAll()
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .anyRequest().authenticated()
+
                 )
                 .httpBasic(httpBasic -> {});
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
