@@ -10,6 +10,8 @@ import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
 import project.Artista.service.UserServiceInterface;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
@@ -38,7 +40,12 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         boolean response = userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
-
+    }
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResDTO>> getAllUsers() {
+        //get users
+        List<UserResDTO> response = userService.getAllUsers();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
 }

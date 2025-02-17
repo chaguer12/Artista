@@ -14,6 +14,9 @@ public record UserReqDTO(
     @NotNull
     @Size(min = 8)
     String password,
+    @NotNull
+    @Size(min = 8)
+    String confirmPassword,
     @Email(message = "Email is not valid")
     @NotEmpty(message = "Email cannot be empty")
     String email

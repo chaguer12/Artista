@@ -2,6 +2,7 @@ package project.Artista.service.impl;
 
 
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.Artista.dto.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.UserReqDTO;
@@ -12,12 +13,17 @@ import project.Artista.model.enums.Role;
 import project.Artista.model.User;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.UserServiceInterface;
+
+import java.util.List;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserServiceInterface {
 
     private final  UserRepo userRepo;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
 
@@ -25,12 +31,13 @@ public class UserService implements UserServiceInterface {
     @Override
     public UserResDTO saveUser(UserReqDTO userDTO) {
         //conditon dyal email
-        if(userRepo.findByEmail(userDTO.email()) == null){
+        if(userRepo.findByEmail(userDTO.email()) == null && Objects.equals(userDTO.confirmPassword(), userDTO.password())){
+            String encodePass = passwordEncoder.encode(userDTO.password());
         User user = User.builder()
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
-                .password(userDTO.password())
+                .password(encodePass)
                 .role(Role.ROLE_USER)
                 .build();
         userRepo.save(user);
@@ -67,5 +74,11 @@ public class UserService implements UserServiceInterface {
     public UserResDTO getUser(int id) {
         User user = userRepo.getById(id);
         return userMapper.toDTO(user);
+    }
+
+    @Override
+    public List<UserResDTO> getAllUsers() {
+        List<User> users = userRepo.findAll();
+        return users.stream().map(userMapper::toDTO).toList();
     }
 }
