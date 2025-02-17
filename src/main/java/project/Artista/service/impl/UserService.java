@@ -8,7 +8,7 @@ import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
 import project.Artista.exception.UserAlreadyExists;
-import project.Artista.model.Role;
+import project.Artista.model.enums.Role;
 import project.Artista.model.User;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.UserServiceInterface;
@@ -47,11 +47,19 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public boolean deleteUser(int id) {
-        return false;
+       if(userRepo.existsById(id)){
+           userRepo.deleteById(id);
+           return true;
+       }else{
+           return false;
+       }
+
+
     }
 
     @Override
     public UserResDTO getUser(int id) {
-        return null;
+        User user = userRepo.getById(id);
+        return userMapper.toDTO(user);
     }
 }

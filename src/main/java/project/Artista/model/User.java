@@ -2,7 +2,7 @@ package project.Artista.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import project.Artista.model.enums.Role;
 
 @Entity
 @Table(name = "users")
