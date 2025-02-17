@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
+import project.Artista.dto.records.user.UserUpdateDTO;
 import project.Artista.service.UserServiceInterface;
 
 @RequiredArgsConstructor
@@ -23,6 +24,15 @@ public class UserController {
         UserResDTO response = userService.saveUser(userReq);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<UserResDTO> updateUser(@PathVariable int id, @Valid @RequestBody UserUpdateDTO userUpdate) {
+        UserResDTO response = userService.updateUser(id,userUpdate);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+    }
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<UserResDTO> getUser(@PathVariable int id) {
+        UserResDTO response = userService.getUser(id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+    }
 
 }

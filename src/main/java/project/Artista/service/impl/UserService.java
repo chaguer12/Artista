@@ -41,8 +41,16 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserResDTO updateUser(UserUpdateDTO user) {
-        return null;
+    public UserResDTO updateUser(int id,UserUpdateDTO updateDTO) {
+        User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
+        updateDTO.fullName().ifPresent(user::setFullName);
+        updateDTO.userName().ifPresent(user::setUserName);
+        updateDTO.email().ifPresent(user::setEmail);
+        updateDTO.password().ifPresent(user::setPassword);
+        updateDTO.profilePic().ifPresent(user::setProfilePic);
+        updateDTO.password().ifPresent(user::setPassword);
+        userRepo.save(user);
+        return userMapper.toDTO(user);
     }
 
     @Override
@@ -53,8 +61,6 @@ public class UserService implements UserServiceInterface {
        }else{
            return false;
        }
-
-
     }
 
     @Override
