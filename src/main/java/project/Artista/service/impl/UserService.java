@@ -10,7 +10,7 @@ import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.model.enums.Role;
-import project.Artista.model.User;
+import project.Artista.model.user.User;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.UserServiceInterface;
 
