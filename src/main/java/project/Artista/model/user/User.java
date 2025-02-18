@@ -28,9 +28,7 @@ public abstract class User {
     private String email;
     private String profilePic;
     private String address;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+
 
 
 

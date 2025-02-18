@@ -37,8 +37,7 @@ public class UserService implements UserServiceInterface {
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
-                .password(encodePass)
-                .role(Role.ROLE_USER)
+                .password(encodePass)   
                 .build();
         userRepo.save(user);
         return userMapper.toDTO(user);
