@@ -8,6 +8,7 @@ import project.Artista.dto.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
+import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.model.enums.Role;
 import project.Artista.model.user.Client;
@@ -31,25 +32,33 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserResDTO saveUser(UserReqDTO userDTO) {
-        //conditon dyal email
-        if(userRepo.findByEmail(userDTO.email()) == null && Objects.equals(userDTO.confirmPassword(), userDTO.password())){
-            if(userRepo.existsByUserName(userDTO.userName())){
-                throw new UserAlreadyExists("User already exists with username: " + userDTO.userName());
-
-            }
-            String encodePass = passwordEncoder.encode(userDTO.password());
-        Client user = Client.builder()
+        //call validation
+        validateUser(userDTO);
+        String encoded_password = passwordEncoder.encode(userDTO.password());
+        Client user = (Client) buildUser(userDTO,encoded_password);
+        userRepo.save(user);
+        return userMapper.toDTO(user);
+    }
+    private void validateUser(UserReqDTO userDTO) {
+        //for validation mzyana
+        if (!Objects.equals(userDTO.confirmPassword(), userDTO.password())) {
+            throw new PasswordDoNotMatch("Password and confirmation password do not match.");
+        }
+        if(userRepo.existsByUserName(userDTO.userName())){
+            throw new UserAlreadyExists("User already exists with username: " + userDTO.userName());
+        }
+        if(userRepo.existsByEmail(userDTO.email())){
+            throw new UserAlreadyExists("User already exists with email: " + userDTO.email());
+        }
+    }
+    private User buildUser(UserReqDTO userDTO, String encodedPassword) {
+        return  Client.builder()
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
-                .password(encodePass)
+                .password(encodedPassword)
                 .role(Role.ROLE_CLIENT)
                 .build();
-        userRepo.save(user);
-        return userMapper.toDTO(user);
-        }else {
-            throw new UserAlreadyExists("User already exists with email: " + userDTO.email());
-        }
     }
 
     @Override
