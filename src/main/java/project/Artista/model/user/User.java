@@ -2,6 +2,8 @@ package project.Artista.model.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.PersistenceCreator;
 import project.Artista.model.enums.Role;
 
 @Entity
@@ -10,11 +12,11 @@ import project.Artista.model.enums.Role;
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE , onConstructor_ = @PersistenceCreator)
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;

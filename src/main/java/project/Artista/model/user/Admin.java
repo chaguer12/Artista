@@ -1,23 +1,23 @@
 package project.Artista.model.user;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import project.Artista.model.enums.Role;
 
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue("ADMIN")
+@SuperBuilder
 @Getter
 @Setter
 public class Admin extends User{
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private final Role role = Role.ROLE_ADMIN;
 
-    @Builder
-    public Admin(String userName, String password, String fullName, String email, String profilePic, String address){
-        super(0, userName, password, fullName, email, profilePic, address);
-    }
+
 }

@@ -10,6 +10,7 @@ import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.model.enums.Role;
+import project.Artista.model.user.Client;
 import project.Artista.model.user.User;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.UserServiceInterface;
@@ -32,12 +33,17 @@ public class UserService implements UserServiceInterface {
     public UserResDTO saveUser(UserReqDTO userDTO) {
         //conditon dyal email
         if(userRepo.findByEmail(userDTO.email()) == null && Objects.equals(userDTO.confirmPassword(), userDTO.password())){
+            if(userRepo.existsByUserName(userDTO.userName())){
+                throw new UserAlreadyExists("User already exists with username: " + userDTO.userName());
+
+            }
             String encodePass = passwordEncoder.encode(userDTO.password());
-        User user = User.builder()
+        Client user = Client.builder()
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
-                .password(encodePass)   
+                .password(encodePass)
+                .role(Role.ROLE_CLIENT)
                 .build();
         userRepo.save(user);
         return userMapper.toDTO(user);

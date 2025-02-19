@@ -3,6 +3,7 @@ package project.Artista.model.user;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import project.Artista.model.enums.Role;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(String.valueOf(user.getRole())));
+        return null;
     }
 
     @Override
@@ -26,7 +27,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return user.getUserName();
     }
 
     @Override
