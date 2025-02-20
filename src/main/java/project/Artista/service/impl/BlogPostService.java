@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import project.Artista.dto.mapper.mappers.BlogPostMapper;
 import project.Artista.dto.records.blogPost.BlogReqDTO;
 import project.Artista.dto.records.blogPost.BlogResDTO;
+import project.Artista.dto.records.blogPost.BlogUpdateDTO;
 import project.Artista.exception.BlogPostNotFound;
 import project.Artista.model.BlogPost;
 import project.Artista.model.user.User;
@@ -50,12 +51,17 @@ public class BlogPostService implements BlogPostServiceInterface {
     }
 
     @Override
-    public BlogResDTO updateBlogPost(BlogReqDTO blogPost) {
-        return null;
+    public BlogResDTO updateBlogPost(int id, BlogUpdateDTO blogPost) {
+        BlogPost post = blogPostRepo.findById(id).orElseThrow(()-> new BlogPostNotFound("No blog post was found with this is: " + id));
+        blogPost.title().ifPresent(post::setTitle);
+        blogPost.content().ifPresent(post::setContent);
+        blogPost.image().ifPresent(post::setImage);
+        blogPostRepo.save(post);
+        return blogPostMapper.toDTO(post);
     }
 
     @Override
     public void deleteBlogPost(int id) {
-
+        blogPostRepo.deleteById(id);
     }
 }
