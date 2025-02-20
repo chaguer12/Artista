@@ -6,6 +6,8 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.PersistenceCreator;
 import project.Artista.model.enums.Role;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

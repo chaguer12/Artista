@@ -7,25 +7,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.Artista.dto.records.user.UserReqDTO;
+import project.Artista.dto.records.user.LogInDTO;
+import project.Artista.dto.records.user.SignUpDTO;
 import project.Artista.dto.records.user.UserResDTO;
+import project.Artista.service.AuthServiceInterface;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final AuthServiceInterface authService;
 
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody UserReqDTO userDTO){
-        UserResDTO response;
+    public ResponseEntity<?> signUp(@RequestBody SignUpDTO userDTO){
+        UserResDTO  response = authService.signUp(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/log-in")
-    public ResponseEntity<?> logIn(@RequestBody UserReqDTO userDTO){
-        UserResDTO response;
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response)
+    public ResponseEntity<?> logIn(@RequestBody LogInDTO userDTO){
+        UserResDTO response = authService.logIn(userDTO);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 }
