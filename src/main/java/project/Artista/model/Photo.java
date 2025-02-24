@@ -1,7 +1,6 @@
 package project.Artista.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,5 +11,11 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Photo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+    private String url;
+    private String description;
+
 
 }

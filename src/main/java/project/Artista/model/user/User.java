@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.PersistenceCreator;
+import project.Artista.model.BlogPost;
 import project.Artista.model.enums.Role;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -32,7 +35,13 @@ public class User {
     private String email;
     private String profilePic;
     private String address;
-
+    @OneToMany(
+            mappedBy = "auteur",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<BlogPost> blogSpots = new ArrayList<>();
 
 
 
