@@ -6,7 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import project.Artista.model.Reservation;
+import project.Artista.model.Studio;
 import project.Artista.model.enums.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("PROVIDER")
@@ -19,6 +24,10 @@ public class Provider extends User{
     @Column(nullable = false)
     private final Role role = Role.ROLE_PROVIDER;
     private boolean isValid = false;
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
+    @OneToMany(mappedBy = "studio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Studio> studios = new ArrayList<>();
 
 
 

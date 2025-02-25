@@ -14,4 +14,5 @@ public interface AdminRepo extends JpaRepository<Admin, Integer> {
     boolean existsById(int id);
     Admin getById(int id);
     List<Admin> findAll();
+
 }
