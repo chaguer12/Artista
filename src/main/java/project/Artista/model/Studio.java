@@ -2,6 +2,7 @@ package project.Artista.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import project.Artista.model.user.Provider;
 
 @Entity
 @Table(name = "studios")
@@ -19,5 +20,8 @@ public class Studio {
     private String city;
     private String address;
     private String phone;
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private Provider provider;
 
 }

@@ -22,4 +22,5 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;
+
 }
