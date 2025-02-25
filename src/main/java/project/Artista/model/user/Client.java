@@ -22,7 +22,7 @@ public class Client extends User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private  Role role = Role.ROLE_CLIENT;
-    @OneToMany(mappedBy = "reservation",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
 
 
