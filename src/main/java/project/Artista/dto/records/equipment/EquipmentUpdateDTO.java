@@ -1,8 +1,10 @@
 package project.Artista.dto.records.equipment;
 
+import java.util.Optional;
+
 public record EquipmentUpdateDTO(
-        String name,
-        String description,
-        String image
+        Optional<String> name,
+        Optional<String> description,
+        Optional<String> image
 ) {
 }

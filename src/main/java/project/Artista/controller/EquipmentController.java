@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.Artista.dto.records.equipment.EquipmentReqDTO;
 import project.Artista.dto.records.equipment.EquipmentResDTO;
+import project.Artista.dto.records.equipment.EquipmentUpdateDTO;
 import project.Artista.service.EquipmentServiceInterface;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class EquipmentController {
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
     @PatchMapping("/update/{id}")
-    public ResponseEntity<EquipmentResDTO> updateEquipment(@PathVariable int id, @RequestBody @Valid EquipmentReqDTO equipment) {
+    public ResponseEntity<EquipmentResDTO> updateEquipment(@PathVariable int id, @RequestBody @Valid EquipmentUpdateDTO equipment) {
         EquipmentResDTO resp = equipmentService.updateEquipment(id, equipment);
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
