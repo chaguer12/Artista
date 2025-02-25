@@ -10,7 +10,7 @@ public interface BlogPostServiceInterface {
     BlogResDTO saveBlogPost(BlogReqDTO blogPost);
     List<BlogResDTO> getAllBlogPosts();
     BlogResDTO getBlogPostById(int id);
-    BlogResDTO updateBlogPost(int id,BlogUpdateDTO blogPost);
+    BlogResDTO updateBlogPost(int id, BlogUpdateDTO blogPost);
     void deleteBlogPost(int id);
 
 }

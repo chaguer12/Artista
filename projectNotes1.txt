@@ -1,0 +1,105 @@
+classDiagram
+    class Utilisateur {
+        +int id
+        +String nom
+        +String prenom
+        +String email
+        +String motDePasse
+        +String photoDeProfil
+        +String telephone
+        +String adresse
+        +Date dateInscription
+    }
+
+    class Client {
+        +List historiqueTransactions
+    }
+
+    class Prestataire {
+        +Boolean profilValide
+        +List documents
+        +List commentaires
+    }
+
+    class Admin {
+        +List actions
+    }
+
+    class Studio {
+        +int id
+        +String nom
+        +String description
+        +String adresse
+        +float prixHoraire
+        +float noteMoyenne
+    }
+
+    class Equipment {
+        +int id
+        +String nom
+        +String description
+    }
+
+    class Reservation {
+        +int id
+        +DateTime dateHeureDebut
+        +DateTime dateHeureFin
+        +String status
+        +List notifications
+        +List fichiersPartages
+    }
+
+    class Fichier {
+        +int id
+        +String nom
+        +String type
+        +float taille
+        +String url
+        +String permissions
+    }
+
+    class BlogPost {
+        +int id
+        +String titre
+        +String contenu
+        +Date datePublication
+        +String status
+    }
+
+    class Photo {
+        +int id
+        +String url
+        +String description
+        +String type
+    }
+
+    class Favoris {
+        +Date dateAjout
+    }
+
+    %% Inheritance
+    Utilisateur <|-- Client
+    Utilisateur <|-- Prestataire
+    Utilisateur <|-- Admin
+
+    %% Associations
+    Client "1" --> "many" Reservation : effectue
+    Reservation --> Studio : concerne
+
+    Reservation "1" --> "many" Fichier : contient
+
+    Utilisateur "1" --> "many" BlogPost : écrit
+    BlogPost --> Utilisateur : auteur
+
+    Studio "1" --> "many" Equipment : possède
+    Studio "1" --> "many" Photo : a pour
+
+    BlogPost "1" --> "many" Photo : contient
+
+    %% Relation entre Prestataire et Studio
+    Prestataire "1" --> "many" Studio : gère
+
+    %% Many-to-many via Favoris entre Client et Studio
+    Client "many" -- "many" Studio : Favoris
+    Client "1" --> "many" Favoris : ajoute
+    Studio "1" --> "many" Favoris : est en favori
