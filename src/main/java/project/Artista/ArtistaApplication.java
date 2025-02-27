@@ -9,7 +9,8 @@ public class ArtistaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ArtistaApplication.class, args);
-		
+
 	}
+
 
 }

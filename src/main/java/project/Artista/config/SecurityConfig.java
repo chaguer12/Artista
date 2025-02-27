@@ -1,4 +1,4 @@
-package project.Artista.security;
+package project.Artista.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

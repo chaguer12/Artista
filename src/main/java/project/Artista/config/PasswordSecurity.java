@@ -1,4 +1,4 @@
-package project.Artista.security;
+package project.Artista.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
