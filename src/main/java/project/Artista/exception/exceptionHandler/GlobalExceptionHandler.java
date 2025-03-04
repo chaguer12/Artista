@@ -1,4 +1,4 @@
-package project.Artista.controller.exceptionHandler;
+package project.Artista.exception.exceptionHandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

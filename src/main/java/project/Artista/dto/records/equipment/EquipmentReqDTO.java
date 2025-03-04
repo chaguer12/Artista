@@ -9,7 +9,7 @@ public record EquipmentReqDTO(
         String name,
         @NotEmpty
         String description,
-        @NotEmpty
+
         String image
 ) {
 }

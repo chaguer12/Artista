@@ -2,7 +2,7 @@ package project.Artista.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.Artista.dto.mapper.mappers.BlogPostMapper;
+import project.Artista.mapper.mappers.BlogPostMapper;
 import project.Artista.dto.records.blogPost.BlogReqDTO;
 import project.Artista.dto.records.blogPost.BlogResDTO;
 import project.Artista.dto.records.blogPost.BlogUpdateDTO;

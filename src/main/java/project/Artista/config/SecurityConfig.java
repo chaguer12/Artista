@@ -3,6 +3,7 @@ package project.Artista.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/user/sign-up").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/blog").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/studio").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/equipment").permitAll()
                 )
                 .httpBasic(httpBasic -> {});
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

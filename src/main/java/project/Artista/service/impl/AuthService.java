@@ -1,9 +1,10 @@
 package project.Artista.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import project.Artista.dto.mapper.mappers.UserMapper;
+import project.Artista.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.LogInDTO;
 import project.Artista.dto.records.user.SignUpDTO;
 import project.Artista.dto.records.user.UserResDTO;
@@ -67,5 +68,10 @@ public class AuthService implements AuthServiceInterface {
                 .password(encodedPassword)
                 .role(Role.ROLE_CLIENT)
                 .build();
+    }
+
+    @Override
+    public String generateToken(UserDetails userDetails) {
+        return "";
     }
 }

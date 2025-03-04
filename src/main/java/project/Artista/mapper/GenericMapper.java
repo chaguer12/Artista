@@ -1,4 +1,4 @@
-package project.Artista.dto.mapper;
+package project.Artista.mapper;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.NullValuePropertyMappingStrategy;

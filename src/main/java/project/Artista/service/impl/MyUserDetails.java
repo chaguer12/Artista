@@ -11,7 +11,7 @@ import project.Artista.repository.UserRepo;
 
 @Service
 @RequiredArgsConstructor
-public class MyuserDetails implements UserDetailsService {
+public class MyUserDetails implements UserDetailsService {
     private final UserRepo userRepo;
 
 
@@ -19,7 +19,7 @@ public class MyuserDetails implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUserName(username);
         if(user == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException("User not found with user name: " + username);
         }
         return new UserPrincipal(user);
     }

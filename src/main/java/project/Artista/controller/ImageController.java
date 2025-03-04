@@ -20,6 +20,6 @@ public class ImageController {
     @PostMapping
     public ResponseEntity<String> uploadImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
         String url = cloudinaryService.uploadImage(file);
-        return ResponseEntity.ok(url);  
+        return ResponseEntity.ok(url);
     }
 }

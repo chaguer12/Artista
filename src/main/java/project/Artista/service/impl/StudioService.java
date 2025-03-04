@@ -3,7 +3,7 @@ package project.Artista.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.Artista.dto.mapper.mappers.StudioMapper;
+import project.Artista.mapper.mappers.StudioMapper;
 import project.Artista.dto.records.studio.StudioReqDTO;
 import project.Artista.dto.records.studio.StudioResDTO;
 import project.Artista.dto.records.studio.StudioUpdateDTO;

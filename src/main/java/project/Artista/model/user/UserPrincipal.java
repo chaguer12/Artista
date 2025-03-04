@@ -1,23 +1,24 @@
 package project.Artista.model.user;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import project.Artista.model.enums.Role;
+
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
+@RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
-    private  User user;
+    private final  User user;
 
-    public UserPrincipal(User user){
-        this.user = user;
-    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

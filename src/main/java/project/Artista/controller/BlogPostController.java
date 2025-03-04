@@ -24,7 +24,7 @@ public class BlogPostController {
         BlogResDTO response = blogPostService.saveBlogPost(blogDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @GetMapping("/posts")
+    @GetMapping
     public ResponseEntity<List<BlogResDTO>> getAll(){
         List<BlogResDTO> response = blogPostService.getAllBlogPosts();
         return ResponseEntity.status(HttpStatus.OK).body(response);

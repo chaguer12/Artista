@@ -1,5 +1,6 @@
 package project.Artista.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,13 @@ public class AuthController {
 
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody SignUpDTO userDTO){
+    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDTO userDTO){
         UserResDTO  response = authService.signUp(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/log-in")
-    public ResponseEntity<?> logIn(@RequestBody LogInDTO userDTO){
+    public ResponseEntity<?> logIn(@RequestBody @Valid LogInDTO userDTO){
         UserResDTO response = authService.logIn(userDTO);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }

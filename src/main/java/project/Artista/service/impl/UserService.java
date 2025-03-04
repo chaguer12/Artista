@@ -4,7 +4,7 @@ package project.Artista.service.impl;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import project.Artista.dto.mapper.mappers.UserMapper;
+import project.Artista.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
