@@ -38,4 +38,10 @@ public class GlobalExceptionHandler {
         ErrorInfo errorInfo = new ErrorInfo(HttpStatus.NOT_FOUND.value(), blogPostNotFound.getMessage(),System.currentTimeMillis());
         return new ResponseEntity<ErrorInfo>(errorInfo, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorInfo> reservationAlreadyExists(ReservationAlreadyExists reservationAlreadyExists) {
+        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.CONFLICT.value(), reservationAlreadyExists.getMessage(),System.currentTimeMillis());
+        return new ResponseEntity<ErrorInfo>(errorInfo, HttpStatus.CONFLICT);
+    }
 }

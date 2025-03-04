@@ -18,7 +18,7 @@ public class ReservationService implements ReservationServiceInterface {
     private final ReservationMapper reservationMapper;
 
     @Override
-    public ReservationResDTO saveReservation(ReservationReqDTO reservationDTo) {
+    public ReservationResDTO saveReservation(ReservationReqDTO reservationDTO) {
         return null;
     }
 
