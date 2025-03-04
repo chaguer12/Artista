@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ReservationServiceInterface {
     ReservationResDTO saveReservation(ReservationReqDTO reservationDTo);
-    ReservationResDTO updateReservation(ReservationUpdateDTO reservationDTO);
+    ReservationResDTO updateReservation(long reservationId,ReservationUpdateDTO reservationDTO);
     void deleteReservation(long id);
     ReservationResDTO getReservationById(long id);
     List<ReservationResDTO> getAllReservations();

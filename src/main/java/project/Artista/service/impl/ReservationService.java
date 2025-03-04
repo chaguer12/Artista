@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import project.Artista.dto.records.reservation.ReservationReqDTO;
 import project.Artista.dto.records.reservation.ReservationResDTO;
 import project.Artista.dto.records.reservation.ReservationUpdateDTO;
+import project.Artista.exception.EntityNotFound;
 import project.Artista.mapper.mappers.ReservationMapper;
+import project.Artista.model.Reservation;
 import project.Artista.repository.ReservationRepo;
 import project.Artista.service.ReservationServiceInterface;
 
@@ -23,22 +25,29 @@ public class ReservationService implements ReservationServiceInterface {
     }
 
     @Override
-    public ReservationResDTO updateReservation(ReservationUpdateDTO reservationDTO) {
-        return null;
+    public ReservationResDTO updateReservation(long reservationId,ReservationUpdateDTO reservationDTO) {
+        Reservation reservation = reservationRepo.findById((int) reservationId).orElseThrow(() -> new EntityNotFound("No reservation found using id: " + reservationId));
+        reservationDTO.date().ifPresent(reservation::setDate);
+        reservationDTO.startTime().ifPresent(reservation::setStartTime);
+        reservationDTO.endTIme().ifPresent(reservation::setEndTime);
+        reservationRepo.save(reservation);
+        return reservationMapper.toDTO(reservation);
     }
 
     @Override
     public void deleteReservation(long id) {
-
+        reservationRepo.deleteById((int) id);
     }
 
     @Override
     public ReservationResDTO getReservationById(long id) {
-        return null;
+        Reservation reservation = reservationRepo.findById((int) id).orElseThrow(() -> new EntityNotFound("No reservation found using id: " + id));
+        return reservationMapper.toDTO(reservation);
     }
 
     @Override
     public List<ReservationResDTO> getAllReservations() {
-        return List.of();
+        List<Reservation> reservations = reservationRepo.findAll();
+        return reservations.stream().map(reservationMapper::toDTO).toList();
     }
 }

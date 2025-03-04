@@ -28,11 +28,11 @@ public class UserService implements UserServiceInterface {
     private final PasswordEncoder passwordEncoder;
 
 
+    //chuf AuthService
 
 
     @Override
     public UserResDTO saveUser(UserReqDTO userDTO) {
-        //call validation
         validateUser(userDTO);
         String encoded_password = passwordEncoder.encode(userDTO.password());
         Client user = (Client) buildUser(userDTO,encoded_password);

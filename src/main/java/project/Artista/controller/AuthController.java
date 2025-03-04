@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.Artista.dto.records.user.AuthResponse;
 import project.Artista.dto.records.user.LogInDTO;
 import project.Artista.dto.records.user.SignUpDTO;
 import project.Artista.dto.records.user.UserResDTO;
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/log-in")
-    public ResponseEntity<?> logIn(@RequestBody @Valid LogInDTO userDTO){
+    public ResponseEntity<UserResDTO> logIn(@RequestBody @Valid LogInDTO userDTO){
         UserResDTO response = authService.logIn(userDTO);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }

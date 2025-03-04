@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/blog").permitAll()
                         .requestMatchers(HttpMethod.GET,"/studio").permitAll()
                         .requestMatchers(HttpMethod.GET,"/equipment").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/reservation").permitAll()
                 )
                 .httpBasic(httpBasic -> {});
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
