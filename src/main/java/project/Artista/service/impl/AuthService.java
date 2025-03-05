@@ -1,6 +1,13 @@
 package project.Artista.service.impl;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +24,10 @@ import project.Artista.model.user.User;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.AuthServiceInterface;
 
+import java.security.Key;
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 @Service
 @RequiredArgsConstructor
@@ -24,6 +35,12 @@ public class AuthService implements AuthServiceInterface {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final MyUserDetails userDetailsService;
+    private final AuthenticationManager authenticationManager;
+
+    @Value("${jwt.secret}")
+    private String secretKey;
+    private final Long jwtExpiryMs = 86400000L;
     @Override
     public UserResDTO signUp(SignUpDTO signUpDTO) {
         validateUser(signUpDTO);
@@ -34,11 +51,10 @@ public class AuthService implements AuthServiceInterface {
     }
 
     @Override
-    public UserResDTO logIn(LogInDTO logInDTO) {
+    public UserDetails logIn(LogInDTO logInDTO) {
         validateCreds(logInDTO);
-        User user = userRepo.findByEmail(logInDTO.email());
-        return userMapper.toDTO(user);
-
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(),logInDTO.password()));
+        return userDetailsService.loadUserByUsername(logInDTO.email());
     }
     private void validateCreds(LogInDTO logInDTO){
         if(!userRepo.existsByEmail(logInDTO.email())){
@@ -72,6 +88,34 @@ public class AuthService implements AuthServiceInterface {
 
     @Override
     public String generateToken(UserDetails userDetails) {
-        return "";
+        Map<String, Object> claims = new HashMap<>();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiryMs))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    @Override
+    public UserDetails validateToken(String token) {
+        String userName = extractUsername(token);
+        return userDetailsService.loadUserByUsername(userName);
+    }
+
+    private String extractUsername(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
+
+    private Key getSignInKey(){
+        byte[] keyBytes = secretKey.getBytes();
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

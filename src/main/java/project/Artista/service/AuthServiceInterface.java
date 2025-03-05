@@ -7,6 +7,7 @@ import project.Artista.dto.records.user.UserResDTO;
 
 public interface AuthServiceInterface {
         UserResDTO signUp(SignUpDTO signUpDTO);
-        UserResDTO logIn(LogInDTO logInDTO);
+        UserDetails logIn(LogInDTO logInDTO);
         String generateToken(UserDetails userDetails);
+        UserDetails validateToken(String token);
 }

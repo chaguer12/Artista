@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +30,10 @@ public class AuthController {
     }
 
     @PostMapping("/log-in")
-    public ResponseEntity<UserResDTO> logIn(@RequestBody @Valid LogInDTO userDTO){
-        UserResDTO response = authService.logIn(userDTO);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+    public ResponseEntity<AuthResponse> logIn(@RequestBody @Valid LogInDTO userDTO){
+        UserDetails userDetails = authService.logIn(userDTO);
+        String token = authService.generateToken(userDetails);
+        AuthResponse authResponse = AuthResponse.builder().token(token).expiresIn(86400).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(authResponse);
     }
 }

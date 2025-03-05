@@ -25,8 +25,6 @@ public class Provider extends User{
     private final Role role = Role.ROLE_PROVIDER;
     private boolean isValid = false;
     @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> reservations = new ArrayList<>();
-    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Studio> studios = new ArrayList<>();
 
 

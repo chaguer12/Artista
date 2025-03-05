@@ -21,7 +21,13 @@ public class ReservationService implements ReservationServiceInterface {
 
     @Override
     public ReservationResDTO saveReservation(ReservationReqDTO reservationDTO) {
-        return null;
+        Reservation reservation = Reservation.builder()
+                .date(reservationDTO.date())
+                .startTime(reservationDTO.startTime())
+                .endTime(reservationDTO.endTime())
+                .build();
+        reservationRepo.save(reservation);
+        return reservationMapper.toDTO(reservation);
     }
 
     @Override
