@@ -57,7 +57,6 @@ public class UserService implements UserServiceInterface {
                 .userName(userDTO.userName())
                 .email(userDTO.email())
                 .password(encodedPassword)
-                .role(Role.ROLE_CLIENT)
                 .build();
     }
 

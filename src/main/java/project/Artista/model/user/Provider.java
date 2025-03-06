@@ -20,9 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Provider extends User{
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private final Role role = Role.ROLE_PROVIDER;
+
     private boolean isValid = false;
     @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Studio> studios = new ArrayList<>();

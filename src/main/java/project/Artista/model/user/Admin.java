@@ -15,9 +15,7 @@ import project.Artista.model.enums.Role;
 @Getter
 @Setter
 public class Admin extends User{
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private final Role role = Role.ROLE_ADMIN;
+
 
 
 }

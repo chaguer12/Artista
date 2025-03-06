@@ -82,7 +82,6 @@ public class AuthService implements AuthServiceInterface {
                 .userName(userDTO.userName())
                 .email(userDTO.email())
                 .password(encodedPassword)
-                .role(Role.ROLE_CLIENT)
                 .build();
     }
 
