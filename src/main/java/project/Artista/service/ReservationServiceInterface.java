@@ -12,5 +12,6 @@ public interface ReservationServiceInterface {
     void deleteReservation(long id);
     ReservationResDTO getReservationById(long id);
     List<ReservationResDTO> getAllReservations();
+    List<ReservationResDTO> getReservationsByUserId(int userId);
 
 }

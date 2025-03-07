@@ -32,7 +32,7 @@ public class SecurityConfig {
         return new JwtAuthFilter(authService);
     }
 
-    
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthFilter jwtAuthFilter) throws Exception {
@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/blog").permitAll()
                         .requestMatchers(HttpMethod.GET,"/studio").permitAll()
                         .requestMatchers(HttpMethod.GET,"/equipment").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/reservation").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/reservation").hasRole("PROVIDER")
                 )
                 .httpBasic(httpBasic -> {});
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

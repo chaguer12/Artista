@@ -56,4 +56,10 @@ public class ReservationService implements ReservationServiceInterface {
         List<Reservation> reservations = reservationRepo.findAll();
         return reservations.stream().map(reservationMapper::toDTO).toList();
     }
+
+    @Override
+    public List<ReservationResDTO> getReservationsByUserId(int userId) {
+        List<Reservation> reservations = reservationRepo.findByUserId(userId);
+        return reservations.stream().map(reservationMapper::toDTO).toList();
+    }
 }
