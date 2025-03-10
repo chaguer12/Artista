@@ -26,22 +26,22 @@ public class UserController {
         UserResDTO response = userService.saveUser(userReq);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<UserResDTO> updateUser(@PathVariable int id, @Valid @RequestBody UserUpdateDTO userUpdate) {
         UserResDTO response = userService.updateUser(id,userUpdate);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
-    @GetMapping("/profile/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResDTO> getUser(@PathVariable int id) {
         UserResDTO response = userService.getUser(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
-    @DeleteMapping("/delete-user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         boolean response = userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
-    @GetMapping("/users")
+    @GetMapping("/all")
     public ResponseEntity<List<UserResDTO>> getAllUsers() {
         //get users
         List<UserResDTO> response = userService.getAllUsers();

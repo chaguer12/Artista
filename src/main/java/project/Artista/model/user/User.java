@@ -35,6 +35,7 @@ public class User {
     private String email;
     private String profilePic;
     private String address;
+    private String city;
     @OneToMany(
             mappedBy = "auteur",
             cascade = CascadeType.ALL,
