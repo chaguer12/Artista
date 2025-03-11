@@ -1,6 +1,6 @@
 package project.Artista.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import  lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.Artista.dto.records.user.UserReqDTO;
@@ -10,10 +10,7 @@ import project.Artista.exception.EntityNotFound;
 import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.ProviderMapper;
-import project.Artista.model.user.Client;
 import project.Artista.model.user.Provider;
-import project.Artista.model.user.User;
-import project.Artista.repository.ClientRepo;
 import project.Artista.repository.ProviderRepo;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.ProviderServiceInterface;

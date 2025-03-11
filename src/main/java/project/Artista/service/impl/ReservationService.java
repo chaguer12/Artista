@@ -59,7 +59,7 @@ public class ReservationService implements ReservationServiceInterface {
 
     @Override
     public List<ReservationResDTO> getReservationsByUserId(int userId) {
-        List<Reservation> reservations = reservationRepo.findByUserId(userId);
+        List<Reservation> reservations = reservationRepo.findByClientId(userId);
         return reservations.stream().map(reservationMapper::toDTO).toList();
     }
 }
