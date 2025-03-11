@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     private final  UserServiceInterface userService;
@@ -31,7 +32,7 @@ public class UserController {
         UserResDTO response = userService.updateUser(id,userUpdate);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<UserResDTO> getUser(@PathVariable int id) {
         UserResDTO response = userService.getUser(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);

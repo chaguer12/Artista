@@ -40,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthFilter jwtAuthFilter) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/user/sign-up").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/user").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/log-in").permitAll()
                         .requestMatchers(HttpMethod.GET,"/blog").permitAll()
                         .requestMatchers(HttpMethod.GET,"/studio").permitAll()
