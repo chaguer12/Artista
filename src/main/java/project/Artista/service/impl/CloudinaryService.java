@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import project.Artista.repository.PhotoRepo;
 import project.Artista.service.CloudinaryServiceInterface;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CloudinaryService implements CloudinaryServiceInterface {
     private final Cloudinary cloudinary;
+    private final PhotoRepo photoRepo;
     @Override
     public String uploadImage(MultipartFile file) throws IOException {
         Map result = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("public_id",file.getOriginalFilename()));
