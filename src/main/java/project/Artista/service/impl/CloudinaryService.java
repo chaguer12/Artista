@@ -5,6 +5,10 @@ import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import project.Artista.model.Photo;
+import project.Artista.model.PhotoAssociation;
+import project.Artista.model.enums.PhotoType;
+import project.Artista.repository.PhotoAssociationRepo;
 import project.Artista.repository.PhotoRepo;
 import project.Artista.service.CloudinaryServiceInterface;
 
@@ -16,9 +20,23 @@ import java.util.Map;
 public class CloudinaryService implements CloudinaryServiceInterface {
     private final Cloudinary cloudinary;
     private final PhotoRepo photoRepo;
+    private final PhotoAssociationRepo photoAssociationRepo;
     @Override
-    public String uploadImage(MultipartFile file) throws IOException {
+    public String uploadImage(MultipartFile file, PhotoType type,int entityId) throws IOException {
         Map result = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("public_id",file.getOriginalFilename()));
-        return (String) result.get("secure_url");
+        String imageUrl =  (String) result.get("secure_url");
+        Photo image = Photo.builder()
+                .url(imageUrl)
+                .description(file.getOriginalFilename())
+                .type(type)
+                .build();
+        image = photoRepo.save(image);
+        PhotoAssociation association = PhotoAssociation.builder()
+                .photo(image)
+                .type(type)
+                .entityId(entityId)
+                .build();
+        photoAssociationRepo.save(association);
+        return imageUrl;
     }
 }
