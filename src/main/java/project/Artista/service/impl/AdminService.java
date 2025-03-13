@@ -3,6 +3,7 @@ package project.Artista.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
@@ -10,11 +11,14 @@ import project.Artista.exception.EntityNotFound;
 import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.AdminMapper;
+import project.Artista.model.enums.PhotoType;
 import project.Artista.model.user.Admin;
 import project.Artista.repository.AdminRepo;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.AdminServiceInterface;
+import project.Artista.service.CloudinaryServiceInterface;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,11 +30,19 @@ public class AdminService implements AdminServiceInterface {
     private final UserRepo userRepo;
     private final AdminMapper adminMapper;
     private final PasswordEncoder passwordEncoder;
+    private final CloudinaryServiceInterface cloudinaryService;
     @Override
-    public UserResDTO saveUser(UserReqDTO user) {
+    public UserResDTO saveUser(UserReqDTO user, MultipartFile image) throws IOException {
+
+        String imageUrl = null;
+        if(image != null && !image.isEmpty()) {
+            imageUrl =  cloudinaryService.uploadImage(image, PhotoType.USER_PROFILE);
+
+        }
         validateUser(user);
         String encodedPass = passwordEncoder.encode(user.confirmPassword());
-        Admin admin = buildUser(user, encodedPass);
+        Admin admin = buildUser(user, encodedPass,imageUrl);
+
         adminRepo.save(admin);
         return adminMapper.toDTO(admin);
 
@@ -47,12 +59,13 @@ public class AdminService implements AdminServiceInterface {
             throw new UserAlreadyExists("User already exists with email: " + userDTO.email());
         }
     }
-    private Admin buildUser(UserReqDTO userDTO, String encodedPassword) {
+    private Admin buildUser(UserReqDTO userDTO, String encodedPassword,String imageUrl) {
         return  Admin.builder()
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
                 .password(encodedPassword)
+                .profilePic(imageUrl)
                 .build();
     }
 

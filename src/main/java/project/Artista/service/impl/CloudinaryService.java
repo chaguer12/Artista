@@ -22,7 +22,7 @@ public class CloudinaryService implements CloudinaryServiceInterface {
     private final PhotoRepo photoRepo;
     private final PhotoAssociationRepo photoAssociationRepo;
     @Override
-    public String uploadImage(MultipartFile file, PhotoType type,int entityId) throws IOException {
+    public String uploadImage(MultipartFile file, PhotoType type) throws IOException {
         Map result = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("public_id",file.getOriginalFilename()));
         String imageUrl =  (String) result.get("secure_url");
         Photo image = Photo.builder()
@@ -30,13 +30,7 @@ public class CloudinaryService implements CloudinaryServiceInterface {
                 .description(file.getOriginalFilename())
                 .type(type)
                 .build();
-        image = photoRepo.save(image);
-        PhotoAssociation association = PhotoAssociation.builder()
-                .photo(image)
-                .type(type)
-                .entityId(entityId)
-                .build();
-        photoAssociationRepo.save(association);
+        photoRepo.save(image);
         return imageUrl;
     }
 }

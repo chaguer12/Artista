@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
@@ -19,8 +20,8 @@ public class AdminController {
     private final AdminServiceInterface adminService;
 
     @PostMapping
-    public ResponseEntity<UserResDTO> signUp(@Valid @RequestBody UserReqDTO user) {
-        UserResDTO response = adminService.saveUser(user);
+    public ResponseEntity<UserResDTO> signUp(@Valid @RequestBody UserReqDTO user, @RequestParam(name = "profilePicture",required = false) MultipartFile image) {
+        UserResDTO response = adminService.saveUser(user,image);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
     }

@@ -20,8 +20,8 @@ public class ImageController {
     private final PhotoAssociationRepo photoAssociationRepo;
 
     @PostMapping
-    public ResponseEntity<String> uploadImage(@RequestParam("imageFile") MultipartFile file, @RequestParam("type")PhotoType type,@RequestParam("entityId") int entityId) throws IOException {
-        String url = cloudinaryService.uploadImage(file, type, entityId);
+    public ResponseEntity<String> uploadImage(@RequestParam("imageFile") MultipartFile file, @RequestParam("type")PhotoType type) throws IOException {
+        String url = cloudinaryService.uploadImage(file, type);
         return ResponseEntity.ok(url);
     }
 
