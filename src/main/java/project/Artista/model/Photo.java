@@ -15,6 +15,7 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(columnDefinition = "TEXT")
     private String url;
     private String description;
     @Enumerated(EnumType.STRING)

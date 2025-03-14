@@ -5,11 +5,10 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.PersistenceCreator;
 import project.Artista.model.BlogPost;
-import project.Artista.model.enums.Role;
+import project.Artista.model.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -33,6 +32,7 @@ public class User {
     private String fullName;
     @Column(unique = true,nullable = false)
     private String email;
+    @Column(columnDefinition = "TEXT")
     private String profilePic;
     private String address;
     private String city;

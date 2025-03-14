@@ -1,5 +1,6 @@
 package project.Artista.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import project.Artista.exception.EntityNotFound;
 import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.AdminMapper;
+import project.Artista.model.Photo;
 import project.Artista.model.enums.PhotoType;
 import project.Artista.model.user.Admin;
 import project.Artista.repository.AdminRepo;
@@ -32,17 +34,12 @@ public class AdminService implements AdminServiceInterface {
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryServiceInterface cloudinaryService;
     @Override
-    public UserResDTO saveUser(UserReqDTO user, MultipartFile image) throws IOException {
+    public UserResDTO saveUser(UserReqDTO user) throws IOException {
 
-        String imageUrl = null;
-        if(image != null && !image.isEmpty()) {
-            imageUrl =  cloudinaryService.uploadImage(image, PhotoType.USER_PROFILE);
 
-        }
         validateUser(user);
         String encodedPass = passwordEncoder.encode(user.confirmPassword());
-        Admin admin = buildUser(user, encodedPass,imageUrl);
-
+        Admin admin = buildUser(user, encodedPass);
         adminRepo.save(admin);
         return adminMapper.toDTO(admin);
 
@@ -59,13 +56,12 @@ public class AdminService implements AdminServiceInterface {
             throw new UserAlreadyExists("User already exists with email: " + userDTO.email());
         }
     }
-    private Admin buildUser(UserReqDTO userDTO, String encodedPassword,String imageUrl) {
+    private Admin buildUser(UserReqDTO userDTO, String encodedPassword ){
         return  Admin.builder()
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
                 .password(encodedPassword)
-                .profilePic(imageUrl)
                 .build();
     }
 
@@ -101,5 +97,14 @@ public class AdminService implements AdminServiceInterface {
     public List<UserResDTO> getAllUsers() {
         List<Admin> admins = adminRepo.findAll();
         return admins.stream().map(adminMapper::toDTO).toList();
+    }
+    @Transactional
+    @Override
+    public String uploadProfilePic(String email, MultipartFile file) throws IOException {
+        Admin admin = adminRepo.findByEmail(email).orElseThrow(() -> new EntityNotFound("Admin not found with email: " + email));
+        String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE);
+        admin.setProfilePic(photo);
+        adminRepo.save(admin);
+        return photo;
     }
 }

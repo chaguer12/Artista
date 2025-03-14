@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.util.List;
 
 public interface AdminServiceInterface {
-    UserResDTO saveUser(UserReqDTO user, MultipartFile image) throws IOException;
+    UserResDTO saveUser(UserReqDTO user) throws IOException;
     UserResDTO updateUser(int id, UserUpdateDTO user);
     boolean deleteUser(int id);
     UserResDTO getUser(int id);
     List<UserResDTO> getAllUsers();
+    String uploadProfilePic(String email, MultipartFile file) throws IOException;
 }
