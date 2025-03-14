@@ -12,6 +12,7 @@ import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.ProviderMapper;
 import project.Artista.model.enums.PhotoType;
+import project.Artista.model.enums.Role;
 import project.Artista.model.user.Admin;
 import project.Artista.model.user.Provider;
 import project.Artista.repository.ProviderRepo;
@@ -57,6 +58,7 @@ public class ProviderService implements ProviderServiceInterface {
                 .userName(userDTO.userName())
                 .email(userDTO.email())
                 .password(encodedPassword)
+                .role(Role.ROLE_PROVIDER)
                 .build();
     }
 

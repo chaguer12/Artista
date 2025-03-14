@@ -88,6 +88,7 @@ public class AuthService implements AuthServiceInterface {
     @Override
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role",userDetails.getAuthorities().iterator().next().getAuthority());
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())

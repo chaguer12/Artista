@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.PersistenceCreator;
 import project.Artista.model.BlogPost;
 import project.Artista.model.Photo;
+import project.Artista.model.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "entity_type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE , onConstructor_ = @PersistenceCreator)
@@ -34,6 +35,8 @@ public class User {
     private String email;
     @Column(columnDefinition = "TEXT")
     private String profilePic;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private String address;
     private String city;
     @OneToMany(
@@ -43,6 +46,8 @@ public class User {
     )
     @Builder.Default
     private List<BlogPost> blogSpots = new ArrayList<>();
+
+
 
 
 

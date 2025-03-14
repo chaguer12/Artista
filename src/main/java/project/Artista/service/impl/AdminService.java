@@ -14,6 +14,7 @@ import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.AdminMapper;
 import project.Artista.model.Photo;
 import project.Artista.model.enums.PhotoType;
+import project.Artista.model.enums.Role;
 import project.Artista.model.user.Admin;
 import project.Artista.repository.AdminRepo;
 import project.Artista.repository.UserRepo;
@@ -62,6 +63,7 @@ public class AdminService implements AdminServiceInterface {
                 .userName(userDTO.userName())
                 .email(userDTO.email())
                 .password(encodedPassword)
+                .role(Role.ROLE_ADMIN)
                 .build();
     }
 
