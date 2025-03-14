@@ -3,6 +3,7 @@ package project.Artista.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
@@ -10,11 +11,15 @@ import project.Artista.exception.EntityNotFound;
 import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.ClientMapper;
+import project.Artista.model.enums.PhotoType;
 import project.Artista.model.user.Client;
+import project.Artista.model.user.Provider;
 import project.Artista.repository.ClientRepo;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.ClientServiceInterface;
+import project.Artista.service.CloudinaryServiceInterface;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 @Service
@@ -24,6 +29,7 @@ public class ClientService implements ClientServiceInterface {
     private final ClientMapper clientMapper;
     private final UserRepo userRepo;
     private final ClientRepo clientRepo;
+    private final CloudinaryServiceInterface cloudinaryService;
     @Override
     public UserResDTO saveUser(UserReqDTO userDTO) {
         validateUser(userDTO);
@@ -65,6 +71,7 @@ public class ClientService implements ClientServiceInterface {
         return clientMapper.toDTO(user);
     }
 
+
     @Override
     public boolean deleteUser(int id) {
         if(clientRepo.existsById(id)){
@@ -84,5 +91,13 @@ public class ClientService implements ClientServiceInterface {
     public List<UserResDTO> getAllUsers() {
         List<Client> clients = clientRepo.findAll();
         return clients.stream().map(clientMapper::toDTO).toList();
+    }
+    @Override
+    public String uploadProfilePic(String email, MultipartFile file) throws IOException {
+        Client client = clientRepo.findByEmail(email).orElseThrow(() -> new EntityNotFound("Admin not found with email: " + email));
+        String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE);
+        client.setProfilePic(photo);
+        clientRepo.save(client);
+        return photo;
     }
 }

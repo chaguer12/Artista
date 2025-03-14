@@ -3,6 +3,7 @@ package project.Artista.service.impl;
 import  lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
@@ -10,11 +11,15 @@ import project.Artista.exception.EntityNotFound;
 import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.ProviderMapper;
+import project.Artista.model.enums.PhotoType;
+import project.Artista.model.user.Admin;
 import project.Artista.model.user.Provider;
 import project.Artista.repository.ProviderRepo;
 import project.Artista.repository.UserRepo;
+import project.Artista.service.CloudinaryServiceInterface;
 import project.Artista.service.ProviderServiceInterface;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +30,7 @@ public class ProviderService implements ProviderServiceInterface {
     private final ProviderMapper providerMapper;
     private final UserRepo userRepo;
     private final ProviderRepo providerRepo;
+    private final CloudinaryServiceInterface cloudinaryService;
     @Override
     public UserResDTO saveUser(UserReqDTO userDTO) {
         validateUser(userDTO);
@@ -86,5 +92,14 @@ public class ProviderService implements ProviderServiceInterface {
     public List<UserResDTO> getAllUsers() {
         List<Provider> providers = providerRepo.findAll();
         return providers.stream().map(providerMapper::toDTO).toList();
+    }
+
+    @Override
+    public String uploadProfilePic(String email, MultipartFile file) throws IOException {
+        Provider provider = providerRepo.findByEmail(email).orElseThrow(() -> new EntityNotFound("Admin not found with email: " + email));
+        String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE);
+        provider.setProfilePic(photo);
+        providerRepo.save(provider);
+        return photo;
     }
 }

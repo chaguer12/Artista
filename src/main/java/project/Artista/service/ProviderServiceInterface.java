@@ -1,9 +1,11 @@
 package project.Artista.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProviderServiceInterface {
@@ -12,4 +14,5 @@ public interface ProviderServiceInterface {
     boolean deleteUser(int id);
     UserResDTO getUser(int id);
     List<UserResDTO> getAllUsers();
+    String uploadProfilePic(String email, MultipartFile file) throws IOException;
 }
