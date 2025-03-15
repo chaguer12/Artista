@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/upload").permitAll()
                         .requestMatchers(HttpMethod.POST,"/admin").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/admin/admin-upload").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/equipment").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/provider/get").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/reservation").hasRole("PROVIDER")
                 )
                 .httpBasic(httpBasic -> {});
@@ -77,6 +77,7 @@ public class SecurityConfig {
                         .allowedOrigins("http://localhost:4200", "http://127.0.0.1:4200")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
+                        .allowCredentials(true)
                         .allowCredentials(true);
             }
         };

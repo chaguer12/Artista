@@ -13,7 +13,6 @@ import project.Artista.exception.UserAlreadyExists;
 import project.Artista.mapper.mappers.ProviderMapper;
 import project.Artista.model.enums.PhotoType;
 import project.Artista.model.enums.Role;
-import project.Artista.model.user.Admin;
 import project.Artista.model.user.Provider;
 import project.Artista.repository.ProviderRepo;
 import project.Artista.repository.UserRepo;

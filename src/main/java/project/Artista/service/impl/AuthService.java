@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import project.Artista.exception.TokenExpired;
 import project.Artista.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.LogInDTO;
 import project.Artista.dto.records.user.SignUpDTO;
@@ -18,17 +20,14 @@ import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.exception.NoUserFound;
 import project.Artista.exception.PasswordDoNotMatch;
 import project.Artista.exception.UserAlreadyExists;
-import project.Artista.model.enums.Role;
 import project.Artista.model.user.Client;
 import project.Artista.model.user.User;
 import project.Artista.repository.UserRepo;
 import project.Artista.service.AuthServiceInterface;
 
 import java.security.Key;
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService implements AuthServiceInterface {
@@ -53,8 +52,10 @@ public class AuthService implements AuthServiceInterface {
     @Override
     public UserDetails logIn(LogInDTO logInDTO) {
         validateCreds(logInDTO);
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(),logInDTO.password()));
-        return userDetailsService.loadUserByUsername(logInDTO.email());
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(),logInDTO.password()));
+//        return userDetailsService.loadUserByUsername(logInDTO.email());
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(), logInDTO.password()));
+        return (UserDetails) authentication.getPrincipal();
     }
     private void validateCreds(LogInDTO logInDTO){
         if(!userRepo.existsByEmail(logInDTO.email())){
@@ -100,8 +101,11 @@ public class AuthService implements AuthServiceInterface {
 
     @Override
     public UserDetails validateToken(String token) {
-        String userName = extractUsername(token);
-        return userDetailsService.loadUserByUsername(userName);
+        if(isTokenExpired(token)){
+            throw new TokenExpired("Token expired");
+
+        }
+        return userDetailsService.loadUserByUsername(extractUsername(token));
     }
 
     private String extractUsername(String token) {
@@ -113,9 +117,22 @@ public class AuthService implements AuthServiceInterface {
 
         return claims.getSubject();
     }
-
+    @Value("${jwt.secret}")
+    private String base64Secret;
     private Key getSignInKey(){
-        byte[] keyBytes = secretKey.getBytes();
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(base64Secret));
+    }
+    private boolean isTokenExpired(String token) {
+        Claims claims = extractAllClaims(token);
+        Date expiration = claims.getExpiration();
+        return expiration.before(new Date());
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())  // Use the same signing key used for signing the token
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

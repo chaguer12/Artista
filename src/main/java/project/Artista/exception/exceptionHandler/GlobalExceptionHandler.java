@@ -41,7 +41,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorInfo> reservationAlreadyExists(ReservationAlreadyExists reservationAlreadyExists) {
-        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.CONFLICT.value(), reservationAlreadyExists.getMessage(),System.currentTimeMillis());
-        return new ResponseEntity<ErrorInfo>(errorInfo, HttpStatus.CONFLICT);
+        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.IM_USED.value(), reservationAlreadyExists.getMessage(),System.currentTimeMillis());
+        return new ResponseEntity<ErrorInfo>(errorInfo, HttpStatus.IM_USED);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorInfo> tokenExpired(TokenExpired tokenExpired) {
+        ErrorInfo erroInfo = new ErrorInfo(HttpStatus.CONFLICT.value(), tokenExpired.getMessage(),System.currentTimeMillis());
+        return new ResponseEntity<ErrorInfo>(erroInfo, HttpStatus.CONFLICT);
     }
 }
