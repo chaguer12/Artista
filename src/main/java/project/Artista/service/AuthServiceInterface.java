@@ -10,4 +10,5 @@ public interface AuthServiceInterface {
         UserDetails logIn(LogInDTO logInDTO);
         String generateToken(UserDetails userDetails);
         UserDetails validateToken(String token);
+        String extractUsername(String token);
 }

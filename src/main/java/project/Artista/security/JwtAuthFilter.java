@@ -26,23 +26,30 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException
     {
         try {
+            String token = extractToken(request);
 
-        String token = extractToken(request);
-        if(token != null){
-            UserDetails userDetails = authService.validateToken(token);
+            // ✅ Token must not be null before processing
+            if (token != null) {
+                String userName = authService.extractUsername(token);
 
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                // ✅ Validate token and get UserDetails
+                UserDetails userDetails = authService.validateToken(token);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            if(userDetails instanceof UserPrincipal){
-                request.setAttribute("userId",((UserPrincipal)userDetails).getId());
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    if (userDetails instanceof UserPrincipal) {
+                        request.setAttribute("userId", ((UserPrincipal) userDetails).getId());
+                    }
+                } else {
+                    log.warn("🔴 Invalid JWT token for user: {}", userName);
+                }
             }
-        }
-
-        }catch (Exception e){
-            //do not throw exceptions user is not authenticated
-            log.warn("Received invalid auth token");
-
+        } catch (Exception e) {
+            log.warn("🔴 Error processing JWT token: {}", e.getMessage());
         }
         filterChain.doFilter(request, response);
     }

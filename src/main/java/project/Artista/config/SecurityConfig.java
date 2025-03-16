@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH,"/admin/admin-upload").permitAll()
                         .requestMatchers(HttpMethod.GET,"/provider/get").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/reservation").hasRole("PROVIDER")
+                        .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> {});
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

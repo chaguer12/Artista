@@ -108,7 +108,7 @@ public class AuthService implements AuthServiceInterface {
         return userDetailsService.loadUserByUsername(extractUsername(token));
     }
 
-    private String extractUsername(String token) {
+    public String extractUsername(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
@@ -130,7 +130,7 @@ public class AuthService implements AuthServiceInterface {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())  // Use the same signing key used for signing the token
+                .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
