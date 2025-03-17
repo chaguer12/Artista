@@ -2,6 +2,7 @@ package project.Artista.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import project.Artista.exception.EntityNotFound;
 import project.Artista.mapper.mappers.BlogPostMapper;
 import project.Artista.dto.records.blogPost.BlogReqDTO;
 import project.Artista.dto.records.blogPost.BlogResDTO;
@@ -26,7 +27,7 @@ public class BlogPostService implements BlogPostServiceInterface {
     private final UserRepo userRepo;
     @Override
     public BlogResDTO saveBlogPost(BlogReqDTO blogPost) {
-        User auteur = userRepo.getById(blogPost.auteur_id());
+        User auteur = userRepo.getById(blogPost.auteur_id()).orElseThrow(() -> new EntityNotFound("entity not found using id: " + blogPost.auteur_id()));
         BlogPost post = BlogPost.builder()
                 .title(blogPost.title())
                 .content(blogPost.content())

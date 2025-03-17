@@ -1,6 +1,7 @@
 package project.Artista.service.impl;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -87,7 +88,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserResDTO getUser(int id) {
-        User user = userRepo.getById(id);
+        User user = userRepo.getById(id).orElseThrow(() -> new EntityNotFoundException("User not found!"));
         return userMapper.toDTO(user);
     }
 

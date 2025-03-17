@@ -28,11 +28,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             String token = extractToken(request);
 
-            // ✅ Token must not be null before processing
-            if (token != null) {
-                String userName = authService.extractUsername(token);
 
-                // ✅ Validate token and get UserDetails
+            if (token != null) {
+                String email = authService.extractUsername(token);
+
                 UserDetails userDetails = authService.validateToken(token);
 
                 if (userDetails != null) {
@@ -45,11 +44,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         request.setAttribute("userId", ((UserPrincipal) userDetails).getId());
                     }
                 } else {
-                    log.warn("🔴 Invalid JWT token for user: {}", userName);
+                    log.warn(" Invalid JWT token for user: {}", email);
                 }
             }
         } catch (Exception e) {
-            log.warn("🔴 Error processing JWT token: {}", e.getMessage());
+            log.warn(" Error processing JWT token: {}", e.getMessage());
         }
         filterChain.doFilter(request, response);
     }

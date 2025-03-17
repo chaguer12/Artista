@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import project.Artista.dto.records.user.AuthResponse;
 import project.Artista.exception.TokenExpired;
 import project.Artista.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.LogInDTO;
@@ -52,8 +53,8 @@ public class AuthService implements AuthServiceInterface {
     @Override
     public UserDetails logIn(LogInDTO logInDTO) {
         validateCreds(logInDTO);
-//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(),logInDTO.password()));
-//        return userDetailsService.loadUserByUsername(logInDTO.email());
+//       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(),logInDTO.password()));
+//       return userDetailsService.loadUserByUsername(logInDTO.email());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(), logInDTO.password()));
         return (UserDetails) authentication.getPrincipal();
     }
@@ -87,16 +88,26 @@ public class AuthService implements AuthServiceInterface {
     }
 
     @Override
-    public String generateToken(UserDetails userDetails) {
+    public AuthResponse generateToken(UserDetails userDetails) {
+        String email = userDetails.getUsername();
         Map<String, Object> claims = new HashMap<>();
         claims.put("role",userDetails.getAuthorities().iterator().next().getAuthority());
-        return Jwts.builder()
+        String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiryMs))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+        String refreshToken = Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000L)) // 7 jours en millisecondes
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+
+        return new AuthResponse(accessToken,refreshToken,jwtExpiryMs);
     }
 
     @Override
@@ -107,7 +118,7 @@ public class AuthService implements AuthServiceInterface {
         }
         return userDetailsService.loadUserByUsername(extractUsername(token));
     }
-
+    @Override
     public String extractUsername(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -116,6 +127,16 @@ public class AuthService implements AuthServiceInterface {
                 .getBody();
 
         return claims.getSubject();
+    }
+    @Override
+    public String refreshToken(String refreshToken) {
+        if(isTokenExpired(refreshToken)){
+            throw new TokenExpired("Token expired");
+        }
+        String userName = extractUsername(refreshToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+        return generateToken(userDetails).toString();
+
     }
     @Value("${jwt.secret}")
     private String base64Secret;

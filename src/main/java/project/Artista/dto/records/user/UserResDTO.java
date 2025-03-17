@@ -11,5 +11,6 @@ public record UserResDTO(
         String email,
         String profilePic,
         String address,
-        Role role
+        Role role,
+        boolean isValid
 ) {}

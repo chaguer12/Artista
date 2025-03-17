@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import project.Artista.exception.EntityNotFound;
 import project.Artista.model.user.User;
 import project.Artista.model.user.UserPrincipal;
 import project.Artista.repository.UserRepo;
@@ -17,10 +18,7 @@ public class MyUserDetails implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUserName(username);
-        if(user == null) {
-            throw new UsernameNotFoundException("User not found with user name: " + username);
-        }
+        User user = userRepo.findByEmail(username).orElseThrow(() -> new EntityNotFound("entity not found using this username: " + username));
         return new UserPrincipal(user);
     }
 }
