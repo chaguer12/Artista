@@ -98,7 +98,7 @@
         @Override
         public String uploadProfilePic(String email, MultipartFile file) throws IOException {
             Provider provider = providerRepo.findByEmail(email).orElseThrow(() -> new EntityNotFound("Admin not found with email: " + email));
-            String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE);
+            String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE,provider.getId());
             provider.setProfilePic(photo);
             providerRepo.save(provider);
             return photo;

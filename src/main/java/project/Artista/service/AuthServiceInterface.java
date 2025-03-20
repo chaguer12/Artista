@@ -16,4 +16,5 @@ public interface AuthServiceInterface {
         UserDetails validateToken(String token);
         String extractUsername(String token);
         String refreshToken(String refreshToken) throws TokenExpired;
+        UserResDTO getUserProfileByUserName(String username);
 }

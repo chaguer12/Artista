@@ -20,7 +20,9 @@ public record   UserReqDTO(
     String confirmPassword,
     @Email(message = "Email is not valid")
     @NotEmpty(message = "Email cannot be empty")
-    String email
+    String email,
+    String address,
+    String city
 
 ) {
 }

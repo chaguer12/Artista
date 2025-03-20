@@ -104,7 +104,7 @@ public class AdminService implements AdminServiceInterface {
     @Override
     public String uploadProfilePic(String email, MultipartFile file) throws IOException {
         Admin admin = adminRepo.findByEmail(email).orElseThrow(() -> new EntityNotFound("Admin not found with email: " + email));
-        String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE);
+        String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE,admin.getId());
         admin.setProfilePic(photo);
         adminRepo.save(admin);
         return photo;

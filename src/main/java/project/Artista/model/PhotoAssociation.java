@@ -23,6 +23,8 @@ public class PhotoAssociation {
     @Enumerated(EnumType.STRING)
     private PhotoType type;
 
+    private int entityId;
+
 
 
 }

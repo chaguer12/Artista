@@ -13,14 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.Artista.dto.records.user.AuthResponse;
-import project.Artista.exception.TokenExpired;
+import project.Artista.exception.*;
 import project.Artista.mapper.mappers.UserMapper;
 import project.Artista.dto.records.user.LogInDTO;
 import project.Artista.dto.records.user.SignUpDTO;
 import project.Artista.dto.records.user.UserResDTO;
-import project.Artista.exception.NoUserFound;
-import project.Artista.exception.PasswordDoNotMatch;
-import project.Artista.exception.UserAlreadyExists;
 import project.Artista.model.user.Client;
 import project.Artista.model.user.User;
 import project.Artista.repository.UserRepo;
@@ -138,6 +135,14 @@ public class AuthService implements AuthServiceInterface {
         return generateToken(userDetails).toString();
 
     }
+
+    @Override
+    public UserResDTO getUserProfileByUserName(String username) {
+        User user = userRepo.findByUserName(username).orElseThrow(()-> new EntityNotFound("user not found using username: " + username));
+        return userMapper.toDTO(user);
+
+    }
+
     @Value("${jwt.secret}")
     private String base64Secret;
     private Key getSignInKey(){

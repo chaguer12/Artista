@@ -95,7 +95,7 @@ public class ClientService implements ClientServiceInterface {
     @Override
     public String uploadProfilePic(String email, MultipartFile file) throws IOException {
         Client client = clientRepo.findByEmail(email).orElseThrow(() -> new EntityNotFound("Admin not found with email: " + email));
-        String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE);
+        String photo = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE,client.getId());
         client.setProfilePic(photo);
         clientRepo.save(client);
         return photo;

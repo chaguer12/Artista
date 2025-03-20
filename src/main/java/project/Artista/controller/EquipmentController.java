@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import project.Artista.dto.records.equipment.EquipmentReqDTO;
 import project.Artista.dto.records.equipment.EquipmentResDTO;
 import project.Artista.dto.records.equipment.EquipmentUpdateDTO;
+import project.Artista.model.enums.PhotoType;
 import project.Artista.service.EquipmentServiceInterface;
 
 import java.util.List;
@@ -40,5 +41,14 @@ public class EquipmentController {
     public ResponseEntity<EquipmentResDTO> deleteEquipment(@PathVariable int id) {
         equipmentService.deleteEquipment(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+    @PostMapping("/associate-image")
+    public ResponseEntity<String> associateImage(
+            @RequestParam int photoId,
+            @RequestParam int equipmentId,
+            @RequestParam PhotoType type) {
+
+        equipmentService.associateImage(photoId, equipmentId, type);
+        return ResponseEntity.ok("Photo associated successfully with Equipment.");
     }
 }
