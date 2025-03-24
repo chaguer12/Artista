@@ -12,5 +12,6 @@ public interface StudioServiceInterface {
     void deleteStudio(int id);
     StudioResDTO getStudio(int id);
     List<StudioResDTO> getStudios();
+    List<StudioResDTO> getStudiosByProvider(int providerId);
 
 }

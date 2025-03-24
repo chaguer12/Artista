@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,16 +40,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthFilter jwtAuthFilter) throws Exception {
         http
+
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/user").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/log-in").permitAll()
                         .requestMatchers(HttpMethod.POST,"/provider").permitAll()
                         .requestMatchers(HttpMethod.POST,"/upload/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/admin").permitAll()
-                        .requestMatchers(HttpMethod.PATCH,"/admin/admin-upload").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,"/admin/admin-upload","/user/user-upload","/provider/provider-upload").permitAll()
                         .requestMatchers(HttpMethod.GET,"/provider/get").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/equipment/**").hasRole("PROVIDER")
-                        .requestMatchers(HttpMethod.DELETE,"/equipment/**").hasRole("PROVIDER")
+                        .requestMatchers(HttpMethod.GET,"/studio/**","/equipment/**").hasRole("PROVIDER")
+                        .requestMatchers("/auth/profile","/studio/by-provider/**").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/equipment/**","/studio/**","/studio/**").hasRole("PROVIDER")
+                        .requestMatchers(HttpMethod.DELETE,"/equipment/**","/studio/**","/equipment/**").hasRole("PROVIDER")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> {});
@@ -77,9 +82,8 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:4200", "http://127.0.0.1:4200")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PATCH   ", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true)
                         .allowCredentials(true);
             }
         };

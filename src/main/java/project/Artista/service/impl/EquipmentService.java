@@ -49,7 +49,7 @@ public class EquipmentService implements EquipmentServiceInterface {
     @Override
     public void deleteEquipment(int id) {
         Equipment equipment = equipmentRepo.findById(id).orElseThrow(()-> new EntityNotFound("No equipment was found with id :" + id));
-        equipmentRepo.deleteById(id);
+        equipmentRepo.deleteById(equipment.getId());
     }
 
     @Override

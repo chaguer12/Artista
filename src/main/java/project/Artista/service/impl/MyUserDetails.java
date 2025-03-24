@@ -18,6 +18,7 @@ public class MyUserDetails implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         User user = userRepo.findByEmail(username).orElseThrow(() -> new EntityNotFound("entity not found using this username: " + username));
         return new UserPrincipal(user);
     }

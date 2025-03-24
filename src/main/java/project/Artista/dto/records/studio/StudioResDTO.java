@@ -6,6 +6,10 @@ public record StudioResDTO(
         String description,
         String city,
         String address,
-        String phone
+        String phone,
+        int hourRate,
+        String email
+
+
 ) {
 }

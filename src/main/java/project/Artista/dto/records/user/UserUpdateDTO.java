@@ -8,6 +8,7 @@ public record UserUpdateDTO(
         Optional<String> email,
         Optional<String> profilePic,
         Optional<String> address,
-        Optional<String> password
+        Optional<String> password,
+        Optional<String> city
 ) {
 }

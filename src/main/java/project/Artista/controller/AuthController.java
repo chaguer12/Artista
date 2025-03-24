@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import project.Artista.dto.records.user.*;
+import project.Artista.model.user.UserPrincipal;
 import project.Artista.service.AuthServiceInterface;
 
 @RestController
@@ -47,8 +48,17 @@ public class AuthController {
 
     @GetMapping("/profile")
     public ResponseEntity<UserResDTO> getUserProfile(){
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserResDTO response = authService.getUserProfileByUserName(username);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Ensure principal is UserPrincipal, not String
+        String email;
+        if (principal instanceof UserPrincipal userPrincipal) {
+            email = userPrincipal.getUsername();  // Since getUsername() returns email in your case
+        } else {
+            throw new IllegalStateException("Unexpected principal type: " + principal.getClass().getName());
+        }
+
+        UserResDTO response = authService.getUserProfileByUserName(email);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 }

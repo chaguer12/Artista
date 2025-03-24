@@ -5,11 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.Artista.dto.records.user.UserReqDTO;
 import project.Artista.dto.records.user.UserResDTO;
 import project.Artista.dto.records.user.UserUpdateDTO;
 import project.Artista.service.UserServiceInterface;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,6 +49,12 @@ public class UserController {
         //get users
         List<UserResDTO> response = userService.getAllUsers();
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+    }
+
+    @PatchMapping("/user-upload")
+    public ResponseEntity<String> uploadPhoto(@RequestParam("email") String email,@RequestParam("file") MultipartFile file) throws IOException {
+        String url = userService.uploadProfilePic(email,file);
+        return ResponseEntity.status(HttpStatus.CREATED).body(url);
     }
 
 }

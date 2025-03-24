@@ -49,7 +49,7 @@ public class AuthService implements AuthServiceInterface {
 
     @Override
     public UserDetails logIn(LogInDTO logInDTO) {
-        validateCreds(logInDTO);
+
 //       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(),logInDTO.password()));
 //       return userDetailsService.loadUserByUsername(logInDTO.email());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInDTO.email(), logInDTO.password()));
@@ -76,7 +76,7 @@ public class AuthService implements AuthServiceInterface {
 
 
     private User buildUser(SignUpDTO userDTO, String encodedPassword){
-        return  Client.builder()
+        return  User.builder()
                 .fullName(userDTO.fullName())
                 .userName(userDTO.userName())
                 .email(userDTO.email())
@@ -138,7 +138,7 @@ public class AuthService implements AuthServiceInterface {
 
     @Override
     public UserResDTO getUserProfileByUserName(String username) {
-        User user = userRepo.findByUserName(username).orElseThrow(()-> new EntityNotFound("user not found using username: " + username));
+        User user = userRepo.findByEmail(username).orElseThrow(()-> new EntityNotFound("user not found using username: " + username));
         return userMapper.toDTO(user);
 
     }

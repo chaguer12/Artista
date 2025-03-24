@@ -21,8 +21,8 @@ public class ImageController {
 
 
     @PostMapping
-    public ResponseEntity<String> uploadImage(@RequestParam("imageFile") MultipartFile file, User user) throws IOException {
-        String url = cloudinaryService.uploadImage(file, PhotoType.USER_PROFILE, user.getId());
+    public ResponseEntity<String> uploadImage(@RequestParam("imageFile") MultipartFile file,PhotoType type, int entityId) throws IOException {
+        String url = cloudinaryService.uploadImage(file,type,entityId);
         return ResponseEntity.ok(url);
     }
     @PostMapping("/associate-image")

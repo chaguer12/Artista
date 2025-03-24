@@ -20,6 +20,8 @@ public class Studio {
     private String city;
     private String address;
     private String phone;
+    private String email;
+    private int hourRate;
     @ManyToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;

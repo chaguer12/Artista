@@ -1,9 +1,12 @@
 package project.Artista.dto.records.studio;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public record StudioReqDTO(
-        @NotEmpty
+        @NotNull
         String name,
         @NotEmpty
         String description,
@@ -12,7 +15,15 @@ public record StudioReqDTO(
         @NotEmpty
         String address,
         @NotEmpty
-        String phone
+        String phone,
+        @NotEmpty
+        @Email
+        String email,
+        @NotNull
+        @Positive
+        int hourRate,
+        @NotNull
+        int provider_id
 
 ) {
 }

@@ -46,4 +46,10 @@ public class StudioController {
         studioService.deleteStudio(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+    @GetMapping("/by-provider/{providerId}")
+    public ResponseEntity<List<StudioResDTO>> findByProviderId(@PathVariable int providerId){
+
+        List<StudioResDTO> response = studioService.getStudiosByProvider(providerId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
