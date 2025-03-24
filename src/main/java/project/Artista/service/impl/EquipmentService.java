@@ -10,10 +10,12 @@ import project.Artista.exception.EntityNotFound;
 import project.Artista.model.Equipment;
 import project.Artista.model.Photo;
 import project.Artista.model.PhotoAssociation;
+import project.Artista.model.Studio;
 import project.Artista.model.enums.PhotoType;
 import project.Artista.repository.EquipmentRepo;
 import project.Artista.repository.PhotoAssociationRepo;
 import project.Artista.repository.PhotoRepo;
+import project.Artista.repository.StudioRepo;
 import project.Artista.service.EquipmentServiceInterface;
 
 import java.util.List;
@@ -24,12 +26,15 @@ public class EquipmentService implements EquipmentServiceInterface {
     private final EquipmentMapper equipmentMapper;
     private final PhotoAssociationRepo photoAssociationRepo;
     private final PhotoRepo photoRepo;
+    private final StudioRepo studioRepo;
     @Override
     public EquipmentResDTO saveEquipment(EquipmentReqDTO equipmentReqDTO) {
+        Studio studio = studioRepo.findById(equipmentReqDTO.studioId()).orElseThrow(() -> new EntityNotFound("Studio not found using id: " + equipmentReqDTO.studioId()));
         Equipment equipment = Equipment.builder()
                 .name(equipmentReqDTO.name())
                 .description(equipmentReqDTO.description())
                 .image(equipmentReqDTO.image())
+                .studio(studio)
                 .build();
         equipmentRepo.save(equipment);
         return equipmentMapper.toDTO(equipment);

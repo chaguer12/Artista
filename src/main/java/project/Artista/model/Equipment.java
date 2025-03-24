@@ -17,5 +17,8 @@ public class Equipment {
     private String name;
     private String description;
     private String image;
+    @ManyToOne
+    @JoinColumn(name = "studio_id")
+    private Studio studio;
 
 }

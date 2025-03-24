@@ -11,6 +11,7 @@ public record EquipmentReqDTO(
         @NotEmpty
         String description,
         @Nullable
-        String image
+        String image,
+        int studioId
 ) {
 }

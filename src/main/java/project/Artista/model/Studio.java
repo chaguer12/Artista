@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import project.Artista.model.user.Provider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "studios")
 @Getter
@@ -25,5 +28,7 @@ public class Studio {
     @ManyToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;
+    @OneToMany
+    private List<Equipment> equipments = new ArrayList<>();
 
 }
