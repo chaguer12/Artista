@@ -11,7 +11,9 @@
     import project.Artista.dto.records.equipment.EquipmentUpdateDTO;
     import project.Artista.model.enums.PhotoType;
     import project.Artista.service.EquipmentServiceInterface;
+    import project.Artista.service.impl.CloudinaryService;
 
+    import java.io.IOException;
     import java.util.List;
 
 
@@ -20,6 +22,7 @@
     @RequestMapping("/equipment")
     public class EquipmentController {
         private final EquipmentServiceInterface equipmentService;
+        private final CloudinaryService cloudinaryService;
 
 
         @PostMapping("/add")
@@ -53,5 +56,11 @@
 
             equipmentService.associateImage(photoId, equipmentId, type);
             return ResponseEntity.ok("Photo associated successfully with Equipment.");
+        }
+        @PatchMapping("/equipment-upload")
+        public ResponseEntity<String> uploadEquipmentPhoto(@RequestParam("file") MultipartFile file,@RequestParam int equipmentId) throws IOException {
+            String urlResponse = equipmentService.uploadPhoto(file,equipmentId);
+            return ResponseEntity.status(HttpStatus.OK).body(urlResponse);
+
         }
     }

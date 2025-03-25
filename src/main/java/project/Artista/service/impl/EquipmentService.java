@@ -2,6 +2,7 @@ package project.Artista.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.Artista.mapper.mappers.EquipmentMapper;
 import project.Artista.dto.records.equipment.EquipmentReqDTO;
 import project.Artista.dto.records.equipment.EquipmentResDTO;
@@ -18,6 +19,7 @@ import project.Artista.repository.PhotoRepo;
 import project.Artista.repository.StudioRepo;
 import project.Artista.service.EquipmentServiceInterface;
 
+import java.io.IOException;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,8 @@ public class EquipmentService implements EquipmentServiceInterface {
     private final PhotoAssociationRepo photoAssociationRepo;
     private final PhotoRepo photoRepo;
     private final StudioRepo studioRepo;
+    private final CloudinaryService cloudinaryService;
+
     @Override
     public EquipmentResDTO saveEquipment(EquipmentReqDTO equipmentReqDTO) {
         Studio studio = studioRepo.findById(equipmentReqDTO.studioId()).orElseThrow(() -> new EntityNotFound("Studio not found using id: " + equipmentReqDTO.studioId()));
@@ -62,6 +66,16 @@ public class EquipmentService implements EquipmentServiceInterface {
         List<Equipment> equipmentList = equipmentRepo.findAll();
         return equipmentList.stream().map(equipmentMapper::toDTO).toList();
     }
+
+    @Override
+    public String uploadPhoto(MultipartFile file,int equipmentId) throws IOException {
+        Equipment equipment = equipmentRepo.findById(equipmentId).orElseThrow(()-> new EntityNotFound("No equipment was found with id :" + equipmentId));
+        String photo = cloudinaryService.uploadImage(file,PhotoType.EQUIPMENT,equipment.getId());
+        equipment.setImage(photo);
+        equipmentRepo.save(equipment);
+        return photo;
+    }
+
     @Override
     public void associateImage(int photoId, int equipmentId, PhotoType type) {
         Equipment equipment = equipmentRepo.findById(equipmentId)

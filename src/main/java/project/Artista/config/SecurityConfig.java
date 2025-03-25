@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/provider").permitAll()
                         .requestMatchers(HttpMethod.POST,"/upload/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/admin").permitAll()
-                        .requestMatchers(HttpMethod.PATCH,"/admin/admin-upload","/user/user-upload","/provider/provider-upload").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,"/admin/admin-upload","/user/user-upload","/provider/provider-upload","/equipment/equipment-upload").permitAll()
                         .requestMatchers(HttpMethod.GET,"/provider/get").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/studio/**","/equipment/**").hasRole("PROVIDER")
                         .requestMatchers("/auth/profile","/studio/by-provider/**").authenticated()
