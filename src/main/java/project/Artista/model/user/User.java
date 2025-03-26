@@ -48,7 +48,6 @@ public class User {
     private List<BlogPost> blogSpots = new ArrayList<>();
 
 
-
-
-
+    public User(String johnDoe, String johnDoe1, String mail, String hashedPassword) {
+    }
 }

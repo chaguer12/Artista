@@ -14,4 +14,6 @@ public record UserResDTO(
         String city,
         Role role,
         boolean isValid
-) {}
+) {
+
+}

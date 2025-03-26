@@ -10,6 +10,7 @@ import project.Artista.dto.records.blogPost.BlogResDTO;
 import project.Artista.dto.records.blogPost.BlogUpdateDTO;
 import project.Artista.service.BlogPostServiceInterface;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class BlogPostController {
     private final BlogPostServiceInterface blogPostService;
 
     @PostMapping("/add")
-    public ResponseEntity<BlogResDTO> save(@RequestBody @Valid BlogReqDTO blogDTO){
+    public ResponseEntity<BlogResDTO> save(@RequestBody @Valid BlogReqDTO blogDTO) throws IOException {
         BlogResDTO response = blogPostService.saveBlogPost(blogDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
